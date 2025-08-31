@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: image-caption-api
+    runtime: python
+    region: oregon
+    plan: starter
+    branch: main
+    rootDir: backend
+    buildCommand: pip install --upgrade pip setuptools wheel && pip install --only-binary=:all: -r requirements.txt
+    startCommand: gunicorn app:app -w 2 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$PORT --timeout 120
+    envVars:
+      - key: MODEL_PATH
+        value: models/best_model.h5
+      - key: TOKENIZER_PATH
+        value: models/tokenizer.pkl
+      - key: MAX_FILE_SIZE_MB
+        value: 10
+      - key: MAX_BATCH_SIZE
+        value: 3
+      - key: ENVIRONMENT
+        value: production
+      - key: PYTHONUNBUFFERED
+        value: "1"
+    scaling:
+      minInstances: 1
+      maxInstances: 3
