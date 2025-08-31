@@ -42,6 +42,7 @@ app.add_middleware(TrustedHostMiddleware, allowed_hosts=["*"])
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "https://captionit-beta.vercel.app/"
         "https://*.vercel.app",
         "https://vercel.app",
     ],
